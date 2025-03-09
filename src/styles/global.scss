@@ -15,7 +15,7 @@ button {
   cursor: pointer;
   border-radius: 5px;
 
-  &:hover {
-    background: darken($primary-color, 10%);
-  }
+  // &:hover {
+  //   background: darken($primary-color, 10%);
+  // }
 }
