@@ -2,7 +2,7 @@
 
 // // Initialize authentication
 // const auth = new google.auth.GoogleAuth({
-//   keyFile: "google-service-account.json",
+//   keyFile: "_keys/google-service-account.json",
 //   scopes: ["https://www.googleapis.com/auth/spreadsheets"],
 // });
 

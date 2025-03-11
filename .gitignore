@@ -1,6 +1,4 @@
-# IMPORTANT
-google-service-account.json
-
+_keys/*
 
 # Logs
 logs

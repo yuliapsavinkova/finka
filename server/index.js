@@ -6,12 +6,12 @@ import path from "path";
 import { fileURLToPath } from "url";
 
 dotenv.config();
-
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const app = express();
 
-// TODO: for single hosting ~~~~~~~~~~~~~
-app.use(express.static("dist"));
+// Getting the script's folder path
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+// Getting the project's root
+// const __dirname = path.resolve();
 
 // Middleware
 app.use(cors());
@@ -25,7 +25,7 @@ app.use((req, res, next) => {
 
 // Google Sheets Authentication
 const auth = new google.auth.GoogleAuth({
-  keyFile: path.join(__dirname, "../google-service-account.json"),
+  keyFile: path.join(__dirname, "../_keys/google-service-account.json"),
   scopes: ["https://www.googleapis.com/auth/spreadsheets"],
 });
 
@@ -90,6 +90,13 @@ app.get("/api/my-trades", (req, res) => {
 });
 
 console.log("~~~~~~~ Hello from Yulia ~~~~~~~");
+
+// app.use(express.static(path.join(__dirname, "dist")));
+app.use(express.static("dist"));
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "dist", "index.html"));
+});
 
 // Start Server
 const PORT = process.env.PORT || 5001;
