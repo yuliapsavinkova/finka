@@ -1,0 +1,15 @@
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+To GET/POST trades from terminal:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+curl -X GET http://localhost:5001/api/google-trades
+
+curl -X POST http://localhost:5001/api/google-trades \
+     -H "Content-Type: application/json" \
+     -d '{"trades":[["TSLA", "100", "200", "2025-03-08"]]}'
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+To Kill the process
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+lsof -i :5000 (to find PID)
+kill -9 PID
