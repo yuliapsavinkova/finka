@@ -1,5 +1,8 @@
 import { create } from "zustand";
 
+const backEndLink = `${import.meta.env.VITE_BACKEND_URL}/api/google-trades`;
+console.log("Backend URL:", import.meta.env.VITE_BACKEND_URL);
+
 interface Trade {
   symbol: string;
   quantity: number;
@@ -18,7 +21,7 @@ export const useTradeStore = create<TradeStore>((set, get) => ({
   trades: [],
   fetchAllTrades: async () => {
     try {
-      const response = await fetch("http://localhost:5001/api/google-trades");
+      const response = await fetch(backEndLink);
       const data = await response.json();
       set({ trades: data.map(([symbol, quantity, price, date]: any) => ({ symbol, quantity, price, date })) });
     } catch (error) {
@@ -30,7 +33,7 @@ export const useTradeStore = create<TradeStore>((set, get) => ({
   },
   saveAllTrades: async () => {
     try {
-      const response = await fetch("http://localhost:5001/api/google-trades", {
+      const response = await fetch(backEndLink, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

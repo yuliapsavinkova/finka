@@ -1,4 +1,5 @@
 _keys/*
+.env*
 
 # Logs
 logs

@@ -6,22 +6,39 @@ import path from "path";
 import { fileURLToPath } from "url";
 
 dotenv.config();
-const app = express();
 
+const PORT = process.env.PORT || 5001;
+const app = express();
 // Getting the script's folder path
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 // Getting the project's root
 // const __dirname = path.resolve();
 
-// Middleware
-app.use(cors());
-app.use(express.json());
+// CORS Middleware
+app.use(
+  cors(/*{
+    origin: "https://yourfrontend.com",
+    methods: "GET,POST,PUT,DELETE",
+    allowedHeaders: "Content-Type,Authorization",
+  }*/)
+);
+app.use(express.json()); // Enables JSON body parsing.
 
-// Set Content Security Policy (CSP) headers
+// Set Content Security Policy (CSP) headers to prevent XSS attacks
 app.use((req, res, next) => {
   res.setHeader("Content-Security-Policy", "default-src 'self'; font-src 'self' data:");
   next();
 });
+
+/*app.use((req, res, next) => {
+  res.setHeader("Content-Security-Policy", 
+    "default-src 'self'; " +
+    "script-src 'self' https://cdn.jsdelivr.net; " + 
+    "style-src 'self' https://fonts.googleapis.com; " + 
+    "font-src 'self' https://fonts.gstatic.com data:;"
+  );
+  next();
+});*/
 
 // Google Sheets Authentication
 const auth = new google.auth.GoogleAuth({
@@ -89,15 +106,11 @@ app.get("/api/my-trades", (req, res) => {
   });
 });
 
-console.log("~~~~~~~ Hello from Yulia ~~~~~~~");
-
+// If need to deploy server and client together
 // app.use(express.static(path.join(__dirname, "dist")));
-app.use(express.static("dist"));
-
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "dist", "index.html"));
-});
+// app.get("*", (req, res) => {
+//   res.sendFile(path.join(__dirname, "dist", "index.html"));
+// });
 
 // Start Server
-const PORT = process.env.PORT || 5001;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
