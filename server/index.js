@@ -6,6 +6,7 @@ import { google } from "googleapis";
 import dotenv from "dotenv";
 import path from "path";
 import { fileURLToPath } from "url";
+import tradesRoutes from "./routes/finkaRoutes.js";
 
 dotenv.config();
 
@@ -49,6 +50,8 @@ app.use((req, res, next) => {
   res.setHeader("Content-Security-Policy", "default-src 'self'; font-src 'self' data:");
   next();
 });
+
+app.use("/api/trades", tradesRoutes);
 
 /*app.use((req, res, next) => {
   res.setHeader("Content-Security-Policy", 
