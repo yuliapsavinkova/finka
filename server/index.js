@@ -1,4 +1,6 @@
 import express from "express";
+import helmet from "helmet";
+import morgan from "morgan";
 import cors from "cors";
 import { google } from "googleapis";
 import dotenv from "dotenv";
@@ -7,7 +9,7 @@ import { fileURLToPath } from "url";
 
 dotenv.config();
 
-const PORT = process.env.PORT || 5001;
+const PORT = process.env.PORT;
 const app = express();
 // Getting the script's folder path
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -22,7 +24,25 @@ app.use(
     allowedHeaders: "Content-Type,Authorization",
   }*/)
 );
-app.use(express.json()); // Enables JSON body parsing.
+
+// Enables JSON body parsing.
+app.use(express.json());
+
+// Security Middleware
+app.use(
+  helmet(/*{
+  contentSecurityPolicy: {
+    directives: {
+      defaultSrc: ["'self'"],  // Only allow loading content from the same origin
+      scriptSrc: ["'self'", 'trusted-scripts.com'],  // Allow scripts from the same origin and a trusted source
+    },
+  },
+  frameguard: { action: 'deny' },  // Disallow iframe embedding
+}*/)
+);
+
+// Log the ruquests
+app.use(morgan("dev"));
 
 // Set Content Security Policy (CSP) headers to prevent XSS attacks
 app.use((req, res, next) => {
@@ -94,7 +114,7 @@ app.post("/api/google-trades", async (req, res) => {
 
 // Root Route
 app.get("/", (req, res) => {
-  res.send("Congrats! Server is running!");
+  res.send("Server is running...");
 });
 
 app.get("/api/my-trades", (req, res) => {
