@@ -7,7 +7,7 @@ export const getTrades = async (req, res) => {
       `);
 
     console.log("fetched trades", trades);
-    //   res.status(200).json({ success: true, data: trades });
+    // res.status(200).json({ success: true, data: trades });
     res.json(trades.rows);
   } catch (error) {
     console.log("Error in getTrades function", error);
